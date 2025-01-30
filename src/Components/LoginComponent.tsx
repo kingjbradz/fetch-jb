@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router";
 import { Button, Card, TextField } from "@mui/material";
+import { login } from "../Helpers/api";
 
 interface LoginState{
   name: string;
@@ -25,22 +26,10 @@ const LoginComponent = ({ setIsLoggedIn }: { setIsLoggedIn: (state: boolean) => 
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(state),
-      credentials: "include"
-    })
-
-    if (response.ok) {
+    login(state.name, state.email).then(() => {
       setIsLoggedIn(true)
       navigate("/dashboard")
-    } else {
-      alert("boo boo")
-    }
+    }).catch(err => alert(err))
   }
 
   return (
