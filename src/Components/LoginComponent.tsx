@@ -1,14 +1,15 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router";
-import { Button, Card, FormControl, TextField } from "@mui/material";
+import { Button, Card, TextField } from "@mui/material";
 
 interface LoginState{
   name: string;
   email: string;
 }
 
-const LoginComponent = () => {
+const LoginComponent = ({ setIsLoggedIn }: { setIsLoggedIn: (state: boolean) => void }) => {
   const url = "https://frontend-take-home-service.fetch.com/auth/login"
+  const navigate = useNavigate()
 
   const [state, setState] = useState<LoginState>({
     name: "",
@@ -30,24 +31,26 @@ const LoginComponent = () => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(state)
+      body: JSON.stringify(state),
+      credentials: "include"
     })
 
     if (response.ok) {
-      alert("Successful yyeeee")
+      setIsLoggedIn(true)
+      navigate("/dashboard")
     } else {
       alert("boo boo")
     }
   }
 
   return (
-    <Card>
-      <FormControl onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+      <Card>
         <TextField id="name" value={state.name} onChange={handleChange} label="Name"></TextField>
         <TextField id="email" value={state.email} onChange={handleChange} label="Email"></TextField>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </FormControl>
-    </Card>
+        <Button type="submit">Submit</Button>
+      </Card>
+    </form>
   )
 };
 

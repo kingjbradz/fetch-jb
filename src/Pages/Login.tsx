@@ -1,8 +1,8 @@
 import LoginComponent from "../Components/LoginComponent";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (state: boolean) => void }) => {
   return (
-    <LoginComponent />
+    <LoginComponent setIsLoggedIn={setIsLoggedIn} />
   )
 }
 
