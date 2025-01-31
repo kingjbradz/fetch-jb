@@ -24,3 +24,9 @@ export interface Coordinates {
 export interface Match {
   match: string
 }
+
+export interface DogsSearchResponse {
+  resultIds: string[]; 
+  next: string | null;
+  prev: string | null;
+}

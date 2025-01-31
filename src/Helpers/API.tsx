@@ -1,5 +1,5 @@
 const baseUrl = `https://frontend-take-home-service.fetch.com`
-import { Dog } from "./types";
+import { Dog, DogsSearchResponse } from "./types";
 
 export const login = async (name: string, email: string) => {
   const url = "https://frontend-take-home-service.fetch.com/auth/login";
@@ -20,8 +20,14 @@ export const login = async (name: string, email: string) => {
   return response; // Return the response for further handling (or error checking)
 };
 
-export const fetchDogIds = async (pageCursor: string = ""): Promise<string[]> => {
-  const response = await fetch(`${baseUrl}/dogs/search?size=25&from=${pageCursor}`, {
+export const fetchDogSearch = async (pageCursor: string = ""): Promise<DogsSearchResponse> => {
+  let url = baseUrl
+  if (pageCursor) {
+    url = `${baseUrl + pageCursor}`;  // Add only the cursor value, like "25", not the full URL
+  } else {
+    url = `${baseUrl}/dogs/search`
+  }
+  const response = await fetch(url, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -32,7 +38,7 @@ export const fetchDogIds = async (pageCursor: string = ""): Promise<string[]> =>
   if (!response.ok) throw new Error("Failed to fetch dog IDs");
 
   const data = await response.json();
-  return data.resultIds;
+  return data;
 };
 
 export const fetchDogsByIds = async (dogIds: string[]): Promise<Dog[]> => {
