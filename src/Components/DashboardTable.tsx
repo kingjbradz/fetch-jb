@@ -1,5 +1,5 @@
 import React from "react";
-import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Dog } from "../Helpers/types";
 
 interface DashboardTableProps {
@@ -51,7 +51,6 @@ const DashboardTable: React.FC<DashboardTableProps> = ({
         rowCount={total}
         pageSizeOptions={[25]}
         isCellEditable={() => false}
-        checkBoxSelection
       />
     </div>
   );
