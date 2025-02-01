@@ -1,6 +1,6 @@
-import React from "react";
+import { FC } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Dog } from "../Helpers/types.tsx";
+import { Dog } from "../Helpers/Types.tsx";
 
 interface DashboardTableProps {
   dogs: Dog[];
@@ -18,7 +18,7 @@ const columns: GridColDef[] = [
   { field: "zip_code", headerName: "ZIP Code", width: 150, editable: true, hideable: false },
 ];
 
-const DashboardTable: React.FC<DashboardTableProps> = ({
+const DashboardTable: FC<DashboardTableProps> = ({
   dogs,
   handlePage,
   prevCursor,

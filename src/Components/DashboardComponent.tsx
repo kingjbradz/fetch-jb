@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Dog } from "../Helpers/types.tsx";
-import { fetchDogSearch, fetchDogsByIds, fetchBreeds } from "../Helpers/api.tsx";
+import { useState, useEffect, ChangeEvent } from 'react';
+import { Dog } from "../Helpers/Types.tsx";
+import { fetchDogSearch, fetchDogsByIds, fetchBreeds } from "../Helpers/Api.tsx";
 import DashboardTable from "./DashboardTable.tsx";
 
 const DashboardComponent = () => {
@@ -92,7 +92,7 @@ const DashboardComponent = () => {
   };
 
   // 🔹 Handle filter changes dynamically
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleFilterChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
