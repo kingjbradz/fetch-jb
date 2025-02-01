@@ -1,17 +1,14 @@
-import { useState } from "react";
-import { Navigate, Routes, Route } from "react-router";
-import Login from "./Pages/Login.tsx";
-import Dashboard from "./Pages/Dashboard.tsx";
+import {useState} from "react"
+import ButtonAppBar from "./Components/AppBar"
+import Router from "./Components/Router"
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-
   return (
-    <Routes>
-      <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
-      <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-      <Route path="/dashboard" element={<Dashboard setIsLoggedIn={setIsLoggedIn} />} />
-    </Routes>
+    <>
+      <ButtonAppBar setIsLoggedIn={setIsLoggedIn}  />
+      <Router isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+    </>
   )
 }
 

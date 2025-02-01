@@ -1,8 +1,10 @@
-const baseUrl = `https://frontend-take-home-service.fetch.com`;
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Dog, DogsSearchResponse } from "./Types.tsx";
 
+const API_BASE_URL = `https://frontend-take-home-service.fetch.com`;
+
 export const login = async (name: string, email: string) => {
-  const url = `${baseUrl}/auth/login`;
+  const url = `${API_BASE_URL}/auth/login`;
 
   const response = await fetch(url, {
     method: "POST",
@@ -20,6 +22,12 @@ export const login = async (name: string, email: string) => {
   return response; // Return the response for further handling (or error checking)
 };
 
+export const logout = async () => {
+  await fetch(`${API_BASE_URL}/auth/logout`, { method: "POST", credentials: "include" });
+
+  return true; // Indicate successful logout
+};
+
 export const fetchDogSearch = async (
   cursor: string = "",
   filters: any = {}
@@ -32,10 +40,10 @@ export const fetchDogSearch = async (
   let url = "";
   if (cursor && cursor.startsWith("/dogs/search")) {
     // If the cursor is already a full query string, use it directly
-    url = `${baseUrl}${cursor}`;
+    url = `${API_BASE_URL}${cursor}`;
   } else {
     // Build the base URL. Note: We do NOT add a '?' again if there is already one.
-    url = `${baseUrl}/dogs/search?size=25`;
+    url = `${API_BASE_URL}/dogs/search?size=25`;
     url += `&sort=${encodeURIComponent(sortParam)}`;
     if (cursor) {
       url += `&from=${cursor}`;
@@ -69,7 +77,7 @@ export const fetchDogSearch = async (
 
 export const fetchDogsByIds = async (dogIds: string[]): Promise<Dog[]> => {
   console.log("dogIds being sent as", JSON.stringify(dogIds));
-  const response = await fetch(`${baseUrl}/dogs`, {
+  const response = await fetch(`${API_BASE_URL}/dogs`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -85,7 +93,7 @@ export const fetchDogsByIds = async (dogIds: string[]): Promise<Dog[]> => {
 
 export const fetchBreeds = async (): Promise<string[]> => {
   try {
-    const response = await fetch(`${baseUrl}/dogs/breeds`, {
+    const response = await fetch(`${API_BASE_URL}/dogs/breeds`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -106,7 +114,7 @@ export const fetchBreeds = async (): Promise<string[]> => {
 
 export const matchDog = async (dogIds: string[]): Promise<Dog | null> => {
   try {
-      const matchResponse = await fetch(`${baseUrl}/dogs/match`, {
+      const matchResponse = await fetch(`${API_BASE_URL}/dogs/match`, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
@@ -124,7 +132,7 @@ export const matchDog = async (dogIds: string[]): Promise<Dog | null> => {
       if (!matchedDogId) return null;
 
       // Fetch details of the matched dog
-      const dogsResponse = await fetch(`${baseUrl}/dogs`, {
+      const dogsResponse = await fetch(`${API_BASE_URL}/dogs`, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
