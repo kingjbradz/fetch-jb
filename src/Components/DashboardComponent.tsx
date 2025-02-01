@@ -1,16 +1,23 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent } from "react";
 import { Dog } from "../Helpers/Types.tsx";
-import { fetchDogSearch, fetchDogsByIds, fetchBreeds } from "../Helpers/Api.tsx";
+import {
+  fetchDogSearch,
+  fetchDogsByIds,
+  fetchBreeds,
+  matchDogs,
+} from "../Helpers/Api.tsx";
 import DashboardTable from "./DashboardTable.tsx";
 
 const DashboardComponent = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [pageCursor, setPageCursor] = useState<string>(""); 
-  const [prevCursor, setPrevCursor] = useState<string>(""); 
+  const [pageCursor, setPageCursor] = useState<string>("");
+  const [prevCursor, setPrevCursor] = useState<string>("");
   const [nextCursor, setNextCursor] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [total, setTotal] = useState<number>(0);
+  const [selectedDogIds, setSelectedDogIds] = useState<string[]>([]);
+  const [matchedDog, setMatchedDog] = useState<Dog | null>(null);
 
   // 🔹 Store all filters in a single state object
   const [filters, setFilters] = useState({
@@ -41,16 +48,23 @@ const DashboardComponent = () => {
     getBreeds();
   }, []);
 
-  const getDogs = async (cursor: string = "", filters: any = {}, resetPagination: boolean = false) => {
+  const getDogs = async (
+    cursor: string = "",
+    filters: any = {},
+    resetPagination: boolean = false
+  ) => {
     setLoading(true);
     try {
-      const { resultIds, next, prev, total } = await fetchDogSearch(cursor, { ...filters, sort: `breed:${sortOrder}` });
+      const { resultIds, next, prev, total } = await fetchDogSearch(cursor, {
+        ...filters,
+        sort: `breed:${sortOrder}`,
+      });
       const dogsData = await fetchDogsByIds(resultIds);
       setDogs(dogsData);
       setPrevCursor(prev || "");
       setNextCursor(next || "");
       setTotal(total);
-  
+
       if (resetPagination) {
         setPaginationModel({ page: 0, pageSize: paginationModel.pageSize });
         setPageCursor(""); // Reset pagination to start
@@ -59,6 +73,17 @@ const DashboardComponent = () => {
       console.error("Error fetching dogs:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleMatchDogs = async () => {
+    try {
+      const matchedDogId = await matchDogs(selectedDogIds);
+      const matchedDogData = await fetchDogsByIds([matchedDogId]);
+
+      setMatchedDog(matchedDogData[0]);
+    } catch (error) {
+      console.error("Error matching dogs:", error);
     }
   };
 
@@ -92,7 +117,9 @@ const DashboardComponent = () => {
   };
 
   // 🔹 Handle filter changes dynamically
-  const handleFilterChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleFilterChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -104,17 +131,41 @@ const DashboardComponent = () => {
   return (
     <>
       <div>
-        <input type="text" name="ageMin" value={filters.ageMin} onChange={handleFilterChange} placeholder="Min Age" />
-        <input type="text" name="ageMax" value={filters.ageMax} onChange={handleFilterChange} placeholder="Max Age" />
-        
-        <select name="breeds" value={filters.breeds} onChange={handleFilterChange}>
+        <input
+          type="text"
+          name="ageMin"
+          value={filters.ageMin}
+          onChange={handleFilterChange}
+          placeholder="Min Age"
+        />
+        <input
+          type="text"
+          name="ageMax"
+          value={filters.ageMax}
+          onChange={handleFilterChange}
+          placeholder="Max Age"
+        />
+
+        <select
+          name="breeds"
+          value={filters.breeds}
+          onChange={handleFilterChange}
+        >
           <option value="">Select a breed</option>
           {breedsList.map((breed) => (
-            <option key={breed} value={breed}>{breed}</option>
+            <option key={breed} value={breed}>
+              {breed}
+            </option>
           ))}
         </select>
-        
-        <input type="text" name="zipCodes" value={filters.zipCodes} onChange={handleFilterChange} placeholder="Zip Codes" />
+
+        <input
+          type="text"
+          name="zipCodes"
+          value={filters.zipCodes}
+          onChange={handleFilterChange}
+          placeholder="Zip Codes"
+        />
 
         <button
           onClick={() => {
@@ -136,7 +187,22 @@ const DashboardComponent = () => {
           nextCursor={nextCursor}
           total={total}
           paginationModel={paginationModel}
+          selectedDogIds={selectedDogIds}
+          onSelectionChange={setSelectedDogIds}
         />
+      )}
+      <button onClick={handleMatchDogs} disabled={selectedDogIds.length === 0}>
+        Match Selected Dogs
+      </button>
+      {matchedDog && (
+        <div>
+          <h3>Matched Dog</h3>
+          <p>Name: {matchedDog.name}</p>
+          <p>Age: {matchedDog.age}</p>
+          <p>Breed: {matchedDog.breed}</p>
+          <p>ZIP Code: {matchedDog.zip_code}</p>
+          <img src={matchedDog.img} alt={matchedDog.name} width="100" />
+        </div>
       )}
     </>
   );

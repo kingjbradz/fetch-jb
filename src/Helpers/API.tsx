@@ -2,7 +2,7 @@ const baseUrl = `https://frontend-take-home-service.fetch.com`;
 import { Dog, DogsSearchResponse } from "./Types.tsx";
 
 export const login = async (name: string, email: string) => {
-  const url = "https://frontend-take-home-service.fetch.com/auth/login";
+  const url = `${baseUrl}/auth/login`;
 
   const response = await fetch(url, {
     method: "POST",
@@ -20,7 +20,10 @@ export const login = async (name: string, email: string) => {
   return response; // Return the response for further handling (or error checking)
 };
 
-export const fetchDogSearch = async (cursor: string = "", filters: any = {}) => {
+export const fetchDogSearch = async (
+  cursor: string = "",
+  filters: any = {}
+) => {
   // Extract the sort parameter from filters and remove it from the rest
   const { sort, ...otherFilters } = filters;
   // Use the provided sort or default to "breed:asc"
@@ -42,7 +45,9 @@ export const fetchDogSearch = async (cursor: string = "", filters: any = {}) => 
   // Append additional filter parameters (excluding 'sort' since we've already handled it)
   Object.keys(otherFilters).forEach((key) => {
     if (otherFilters[key]) {
-      url += `&${encodeURIComponent(key)}=${encodeURIComponent(otherFilters[key])}`;
+      url += `&${encodeURIComponent(key)}=${encodeURIComponent(
+        otherFilters[key]
+      )}`;
     }
   });
 
@@ -97,4 +102,23 @@ export const fetchBreeds = async (): Promise<string[]> => {
     console.error("fetchBreeds error:", error);
     return [];
   }
+};
+
+export const matchDogs = async (dogIds: string[]): Promise<string> => {
+  if (dogIds.length === 0) {
+    throw new Error("At least one dog must be selected to match.");
+  }
+
+  const response = await fetch(`${baseUrl}/dogs/match`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dogIds),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to match dogs");
+  }
+
+  return response.json(); // Returns matched dog ID
 };
