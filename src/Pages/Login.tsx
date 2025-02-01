@@ -1,4 +1,4 @@
-import LoginComponent from "../Components/LoginComponent";
+import LoginComponent from "../Components/LoginComponent.tsx";
 
 const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (state: boolean) => void }) => {
   return (

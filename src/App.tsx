@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigate, Routes, Route } from "react-router";
-import Login from "./Pages/Login";
-import Dashboard from "./Pages/Dashboard";
+import Login from "./Pages/Login.tsx";
+import Dashboard from "./Pages/Dashboard.tsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)

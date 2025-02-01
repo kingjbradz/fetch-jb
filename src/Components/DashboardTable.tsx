@@ -1,6 +1,6 @@
 import React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Dog } from "../Helpers/types";
+import { Dog } from "../Helpers/types.tsx";
 
 interface DashboardTableProps {
   dogs: Dog[];

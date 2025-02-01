@@ -1,5 +1,5 @@
 const baseUrl = `https://frontend-take-home-service.fetch.com`;
-import { Dog, DogsSearchResponse } from "./types";
+import { Dog, DogsSearchResponse } from "./types.tsx";
 
 export const login = async (name: string, email: string) => {
   const url = "https://frontend-take-home-service.fetch.com/auth/login";

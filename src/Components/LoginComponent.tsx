@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router";
 import { Button, Card, TextField } from "@mui/material";
-import { login } from "../Helpers/api";
+import { login } from "../Helpers/api.tsx";
 
 interface LoginState{
   name: string;
@@ -9,7 +9,6 @@ interface LoginState{
 }
 
 const LoginComponent = ({ setIsLoggedIn }: { setIsLoggedIn: (state: boolean) => void }) => {
-  const url = "https://frontend-take-home-service.fetch.com/auth/login"
   const navigate = useNavigate()
 
   const [state, setState] = useState<LoginState>({

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Dog } from "../Helpers/types";
-import { fetchDogSearch, fetchDogsByIds, fetchBreeds } from "../Helpers/api";
-import DashboardTable from "./DashboardTable";
+import { Dog } from "../Helpers/types.tsx";
+import { fetchDogSearch, fetchDogsByIds, fetchBreeds } from "../Helpers/api.tsx";
+import DashboardTable from "./DashboardTable.tsx";
 
 const DashboardComponent = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);
