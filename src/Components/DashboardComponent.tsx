@@ -4,7 +4,7 @@ import {
   fetchDogSearch,
   fetchDogsByIds,
   fetchBreeds,
-  matchDogs,
+  matchDog,
 } from "../Helpers/Api.tsx";
 import DashboardTable from "./DashboardTable.tsx";
 
@@ -77,15 +77,20 @@ const DashboardComponent = () => {
   };
 
   const handleMatchDogs = async () => {
-    try {
-      const matchedDogId = await matchDogs(selectedDogIds);
-      const matchedDogData = await fetchDogsByIds([matchedDogId]);
+    if (selectedDogIds.length === 0) return;
+    
+    console.log("Matching dogs with IDs:", selectedDogIds);
 
-      setMatchedDog(matchedDogData[0]);
-    } catch (error) {
-      console.error("Error matching dogs:", error);
+    const matchedDog = await matchDog(selectedDogIds);
+
+    if (matchedDog) {
+        console.log("Matched Dog:", matchedDog);
+        setMatchedDog(matchedDog); // Store matched dog in state
+    } else {
+        console.log("No match found.");
     }
-  };
+};
+
 
   // 🔹 Debounce filter updates
   useEffect(() => {

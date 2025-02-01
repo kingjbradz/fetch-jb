@@ -104,21 +104,41 @@ export const fetchBreeds = async (): Promise<string[]> => {
   }
 };
 
-export const matchDogs = async (dogIds: string[]): Promise<string> => {
-  if (dogIds.length === 0) {
-    throw new Error("At least one dog must be selected to match.");
+export const matchDog = async (dogIds: string[]): Promise<Dog | null> => {
+  try {
+      const matchResponse = await fetch(`${baseUrl}/dogs/match`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              // Add authentication headers if needed
+          },
+          body: JSON.stringify(dogIds),
+          credentials: "include", // If cookies or auth are required
+      });
+
+      if (!matchResponse.ok) throw new Error("Failed to match dog");
+
+      const { match: matchedDogId } = await matchResponse.json();
+      console.log("Matched Dog ID:", matchedDogId);
+
+      if (!matchedDogId) return null;
+
+      // Fetch details of the matched dog
+      const dogsResponse = await fetch(`${baseUrl}/dogs`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify([matchedDogId]), // Send ID in an array
+          credentials: "include",
+      });
+
+      if (!dogsResponse.ok) throw new Error("Failed to fetch matched dog details");
+
+      const matchedDogData: Dog[] = await dogsResponse.json();
+      return matchedDogData.length ? matchedDogData[0] : null;
+  } catch (error) {
+      console.error("Error matching dog:", error);
+      return null;
   }
-
-  const response = await fetch(`${baseUrl}/dogs/match`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(dogIds),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to match dogs");
-  }
-
-  return response.json(); // Returns matched dog ID
 };
