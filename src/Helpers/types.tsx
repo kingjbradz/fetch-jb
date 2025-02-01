@@ -30,3 +30,10 @@ export interface DogsSearchResponse {
   next: string | null;
   prev: string | null;
 }
+
+export interface DashboardTableProps {
+  dogs: Dog[];
+  handlePage: (direction: 'next' | 'prev') => void;
+  prevCursor: string;
+  nextCursor: string;
+}
