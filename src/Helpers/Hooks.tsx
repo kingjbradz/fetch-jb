@@ -5,16 +5,20 @@ export const useLogin = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ name, email }: { name: string; email: string }) => {
+    mutationFn: ({ name, email }: { name: string; email: string }) => login(name, email),
+    onSuccess: (_, { name, email }) => {
+      const loginTimestamp = new Date().getTime();
+      const authData = { isAuthenticated: true, name, email, loginTimestamp };
+
+      // Set auth data in localStorage
+      localStorage.setItem("auth", JSON.stringify(authData));
+
+      // Update React Query cache with login state
+      queryClient.setQueryData(["auth"], true);
       queryClient.setQueryData(["user"], { name, email });
-      login(name, email)
-    },
-    onSuccess: () => {
-      queryClient.setQueryData(["auth"], true); // Save login state
     },
   });
 };
-
 export const useAuth = () => { 
   const queryClient = useQueryClient();
   return queryClient.getQueryData<boolean>(["auth"]) || false;
@@ -24,11 +28,11 @@ export const useLogout = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: logout,
+    mutationFn: () => logout(),
     onSuccess: () => {
-      queryClient.setQueryData(["user"], { name: "", email: "" });
+      localStorage.removeItem("auth");
       queryClient.setQueryData(["auth"], false);
-      queryClient.invalidateQueries({queryKey: ["auth"]}); // Clear cache
+      queryClient.setQueryData(["user"], null);
     },
   });
 };

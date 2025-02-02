@@ -9,14 +9,22 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useQuery } from '@tanstack/react-query';
 import PetsIcon from '@mui/icons-material/Pets';
 import LogoutButton from './LogoutButton';
+import navigate from 'react-router-dom';
+// import DogIcon from './DogIcon';
+import { useNavigate } from 'react-router';
 
-export default function ButtonAppBar({ setIsLoggedIn }) {
+export default function ButtonAppBar() {
+  const navigate = useNavigate();
   const { data: auth } = useQuery({
     queryKey: ["auth"],
     initialData: false, // Assuming 'auth' is a boolean indicating login state
   });
   const { data: user } = useQuery({
     queryKey: ["user"],
+    queryFn: () => {
+      const savedUser = localStorage.getItem("auth");
+      return savedUser ? JSON.parse(savedUser) : { name: "", email: "" };
+    },
     initialData: { name: "", email: "" },
   });
   return (
@@ -29,14 +37,15 @@ export default function ButtonAppBar({ setIsLoggedIn }) {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => navigate("/")}
           >
             <PetsIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, textTransform: "capitalize" }}>
-            {user.name.length > 0 ?  `Hi, ${user?.name}!` : "Welcome! Please log in."}
+            {user?.name.length > 0 ?  `Hi, ${user?.name}!` : "Puppy Match!"}
           </Typography>
           {auth && (
-            <LogoutButton setIsLoggedIn={setIsLoggedIn} />
+            <LogoutButton />
           )}
         </Toolbar>
       </AppBar>

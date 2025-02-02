@@ -8,10 +8,10 @@ interface LoginState {
   email: string;
 }
 
-const LoginComponent = ({ setIsLoggedIn }: { setIsLoggedIn: (state: boolean) => void }) => {
+const LoginComponent = () => {
   const navigate = useNavigate();
   const { mutate: loginUser, isPending, error } = useLogin();
-  
+
   const [state, setState] = useState<LoginState>({
     name: "",
     email: "",
@@ -28,10 +28,9 @@ const LoginComponent = ({ setIsLoggedIn }: { setIsLoggedIn: (state: boolean) => 
     e.preventDefault();
     loginUser(state, {
       onSuccess: () => {
-        setIsLoggedIn(true);
         navigate("/dashboard");
       },
-      onError: (err) => alert(err), // Handle error properly
+      onError: (err) => alert(err),
     });
   };
 
