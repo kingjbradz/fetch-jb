@@ -1,19 +1,14 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useQuery } from '@tanstack/react-query';
-import PetsIcon from '@mui/icons-material/Pets';
-import LogoutButton from './LogoutButton';
-import navigate from 'react-router-dom';
-// import DogIcon from './DogIcon';
-import { useNavigate } from 'react-router';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import { useQuery } from "@tanstack/react-query";
+import PetsIcon from "@mui/icons-material/Pets";
+import LogoutButton from "./LogoutButton";
+import { useNavigate } from "react-router";
 
-export default function ButtonAppBar() {
+const TopBar = () => {
   const navigate = useNavigate();
   const { data: auth } = useQuery({
     queryKey: ["auth"],
@@ -28,7 +23,7 @@ export default function ButtonAppBar() {
     initialData: { name: "", email: "" },
   });
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 2 }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -41,14 +36,18 @@ export default function ButtonAppBar() {
           >
             <PetsIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, textTransform: "capitalize" }}>
-            {user?.name.length > 0 ?  `Hi, ${user?.name}!` : "Puppy Match!"}
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, textTransform: "capitalize" }}
+          >
+            {user?.name.length > 0 ? `Hi, ${user?.name}!` : "Puppy Match!"}
           </Typography>
-          {auth && (
-            <LogoutButton />
-          )}
+          {auth && <LogoutButton />}
         </Toolbar>
       </AppBar>
     </Box>
   );
 }
+
+export default TopBar;

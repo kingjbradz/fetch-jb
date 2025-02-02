@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router";
-import { Button, Card, TextField } from "@mui/material";
 import { useLogin } from "../Helpers/Hooks.tsx";
+import LoginForm from "./LoginForm.tsx";
 
 interface LoginState {
   name: string;
@@ -35,16 +35,13 @@ const LoginComponent = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Card>
-        <TextField id="name" value={state.name} onChange={handleChange} label="Name" disabled={isPending} />
-        <TextField id="email" value={state.email} onChange={handleChange} label="Email" disabled={isPending} />
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Logging in..." : "Submit"}
-        </Button>
-        {error && <p style={{ color: "red" }}>Login failed</p>}
-      </Card>
-    </form>
+    <LoginForm
+      state={state}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+      isPending={isPending}
+      error={error} 
+    />
   );
 };
 
