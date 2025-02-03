@@ -5,7 +5,8 @@ const useLogin = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ name, email }: { name: string; email: string }) => login(name, email),
+    mutationFn: ({ name, email }: { name: string; email: string }) =>
+      login(name, email),
     onSuccess: (_, { name, email }) => {
       const loginTimestamp = new Date().getTime();
       const authData = { isAuthenticated: true, name, email, loginTimestamp };

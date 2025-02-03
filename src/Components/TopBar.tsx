@@ -12,7 +12,7 @@ const TopBar = () => {
   const navigate = useNavigate();
   const { data: auth } = useQuery({
     queryKey: ["auth"],
-    initialData: false, 
+    initialData: false,
   });
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -48,6 +48,6 @@ const TopBar = () => {
       </AppBar>
     </Box>
   );
-}
+};
 
 export default TopBar;

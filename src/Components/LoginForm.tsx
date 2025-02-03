@@ -2,7 +2,13 @@ import { FC } from "react";
 import { Card, TextField, Button } from "@mui/material";
 import { LoginFormProps } from "../Helpers/Interfaces";
 
-const LoginForm: FC<LoginFormProps> = ({ state, handleSubmit, handleChange, isPending, error }) => {
+const LoginForm: FC<LoginFormProps> = ({
+  state,
+  handleSubmit,
+  handleChange,
+  isPending,
+  error,
+}) => {
   return (
     <form onSubmit={handleSubmit}>
       <Card
@@ -13,7 +19,7 @@ const LoginForm: FC<LoginFormProps> = ({ state, handleSubmit, handleChange, isPe
           padding: "1rem",
           width: "300px",
         }}
-      > 
+      >
         <TextField
           id="name"
           value={state.name}

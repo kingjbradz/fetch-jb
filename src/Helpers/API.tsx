@@ -22,7 +22,10 @@ export const login = async (name: string, email: string) => {
 };
 
 export const logout = async () => {
-  await fetch(`${API_BASE_URL}/auth/logout`, { method: "POST", credentials: "include" });
+  await fetch(`${API_BASE_URL}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
 
   return true; // Indicate successful logout
 };
@@ -109,37 +112,38 @@ export const fetchBreeds = async (): Promise<string[]> => {
 
 export const matchDog = async (dogIds: string[]): Promise<Dog | null> => {
   try {
-      const matchResponse = await fetch(`${API_BASE_URL}/dogs/match`, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              // Add authentication headers if needed
-          },
-          body: JSON.stringify(dogIds),
-          credentials: "include", // If cookies or auth are required
-      });
+    const matchResponse = await fetch(`${API_BASE_URL}/dogs/match`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Add authentication headers if needed
+      },
+      body: JSON.stringify(dogIds),
+      credentials: "include", // If cookies or auth are required
+    });
 
-      if (!matchResponse.ok) throw new Error("Failed to match dog");
+    if (!matchResponse.ok) throw new Error("Failed to match dog");
 
-      const { match: matchedDogId } = await matchResponse.json();
-      if (!matchedDogId) return null;
+    const { match: matchedDogId } = await matchResponse.json();
+    if (!matchedDogId) return null;
 
-      // Fetch details of the matched dog
-      const dogsResponse = await fetch(`${API_BASE_URL}/dogs`, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify([matchedDogId]), // Send ID in an array
-          credentials: "include",
-      });
+    // Fetch details of the matched dog
+    const dogsResponse = await fetch(`${API_BASE_URL}/dogs`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([matchedDogId]), // Send ID in an array
+      credentials: "include",
+    });
 
-      if (!dogsResponse.ok) throw new Error("Failed to fetch matched dog details");
+    if (!dogsResponse.ok)
+      throw new Error("Failed to fetch matched dog details");
 
-      const matchedDogData: Dog[] = await dogsResponse.json();
-      return matchedDogData.length ? matchedDogData[0] : null;
+    const matchedDogData: Dog[] = await dogsResponse.json();
+    return matchedDogData.length ? matchedDogData[0] : null;
   } catch (error) {
-      console.error("Error matching dog:", error);
-      return null;
+    console.error("Error matching dog:", error);
+    return null;
   }
 };

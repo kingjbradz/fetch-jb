@@ -36,7 +36,7 @@ const LoginComponent = () => {
       handleChange={handleChange}
       handleSubmit={handleSubmit}
       isPending={isPending}
-      error={error} 
+      error={error}
     />
   );
 };

@@ -1,5 +1,12 @@
 import { FC, ChangeEvent } from "react";
-import { TextField, Select, MenuItem, Button, Box, SelectChangeEvent } from "@mui/material";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  Box,
+  SelectChangeEvent,
+} from "@mui/material";
 import { DogFiltersProps } from "../Helpers/Interfaces";
 
 const DogFilters: FC<DogFiltersProps> = ({
@@ -21,7 +28,7 @@ const DogFilters: FC<DogFiltersProps> = ({
         bgcolor: "background.paper",
         padding: 1,
         borderRadius: "4px",
-        boxShadow: 1
+        boxShadow: 1,
       }}
     >
       <TextField
@@ -29,7 +36,9 @@ const DogFilters: FC<DogFiltersProps> = ({
         name="ageMin"
         label="Min Age"
         value={filters.ageMin}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFilterChange(event)}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          handleFilterChange(event)
+        }
         size="small"
       />
       <TextField
@@ -37,14 +46,18 @@ const DogFilters: FC<DogFiltersProps> = ({
         name="ageMax"
         label="Max Age"
         value={filters.ageMax}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFilterChange(event)}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          handleFilterChange(event)
+        }
         size="small"
       />
 
       <Select
         name="breeds"
         value={filters.breeds}
-        onChange={(event: SelectChangeEvent<string>) => handleFilterChange(event)}
+        onChange={(event: SelectChangeEvent<string>) =>
+          handleFilterChange(event)
+        }
         displayEmpty
         size="small"
       >
@@ -61,7 +74,9 @@ const DogFilters: FC<DogFiltersProps> = ({
         name="zipCodes"
         label="Zip Code"
         value={filters.zipCodes}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFilterChange(event)}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          handleFilterChange(event)
+        }
         size="small"
       />
 

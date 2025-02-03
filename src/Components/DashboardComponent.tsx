@@ -22,7 +22,7 @@ const DashboardComponent = () => {
   const [total, setTotal] = useState<number>(0);
   const [selectedDogIds, setSelectedDogIds] = useState<string[]>([]);
   const [matchedDog, setMatchedDog] = useState<Dog | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false); 
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [filters, setFilters] = useState({
     ageMin: "",
     ageMax: "",
@@ -67,7 +67,7 @@ const DashboardComponent = () => {
 
       if (resetPagination) {
         setPaginationModel({ page: 0, pageSize: paginationModel.pageSize });
-        setPageCursor(""); 
+        setPageCursor("");
       }
     } catch (error) {
       console.error("Error fetching dogs:", error);
@@ -121,8 +121,10 @@ const DashboardComponent = () => {
 
   // Handle filter changes dynamically
   const handleFilterChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent<string>
-  ) =>  {
+    event:
+      | ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+      | SelectChangeEvent<string>
+  ) => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -201,7 +203,7 @@ const DashboardComponent = () => {
       <MatchDialog
         matchedDog={matchedDog}
         open={dialogOpen}
-        onClose={() => setDialogOpen(false)} 
+        onClose={() => setDialogOpen(false)}
       />
     </>
   );

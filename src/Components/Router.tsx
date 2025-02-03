@@ -17,7 +17,10 @@ function Router() {
   return (
     <Routes>
       {/* Root route should redirect based on authentication state */}
-      <Route path="/" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />} />
+      <Route
+        path="/"
+        element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />}
+      />
 
       {/* Login should not be accessible when logged in */}
       {!isLoggedIn ? (

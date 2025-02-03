@@ -1,6 +1,6 @@
-import Button from '@mui/material/Button';
-import useLogout from '../Helpers/Hooks/useLogout';
-import { useNavigate } from 'react-router';
+import Button from "@mui/material/Button";
+import useLogout from "../Helpers/Hooks/useLogout";
+import { useNavigate } from "react-router";
 
 const LogoutButton = () => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ const LogoutButton = () => {
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
-    logoutUser(); 
+    logoutUser();
     navigate("/login");
   };
 

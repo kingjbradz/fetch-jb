@@ -8,12 +8,13 @@ import { theme } from "./Helpers/Theme";
 
 function App() {
   const queryClient = useQueryClient();
-  const logoutMutation = useLogout(); 
+  const logoutMutation = useLogout();
 
   useEffect(() => {
     const authData = localStorage.getItem("auth");
     if (authData) {
-      const { isAuthenticated, name, email, loginTimestamp } = JSON.parse(authData);
+      const { isAuthenticated, name, email, loginTimestamp } =
+        JSON.parse(authData);
       const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
       const currentTime = new Date().getTime();
 

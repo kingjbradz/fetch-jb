@@ -6,7 +6,7 @@ const Dashboard = () => {
     <Box sx={{ padding: 1 }}>
       <DashboardComponent />
     </Box>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

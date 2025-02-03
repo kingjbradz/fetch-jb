@@ -12,6 +12,6 @@ const useLogout = () => {
       queryClient.setQueryData(["user"], null);
     },
   });
-}
+};
 
-  export default useLogout;
+export default useLogout;
