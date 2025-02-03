@@ -1,4 +1,5 @@
 import { ChangeEvent } from "react";
+import { SelectChangeEvent } from "@mui/material";
 
 export interface Dog {
   id: string;
@@ -70,7 +71,9 @@ export interface DogFiltersProps {
     zipCodes: string;
   };
   handleFilterChange: (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event:
+      | ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+      | SelectChangeEvent<string>
   ) => void;
   setSortOrder: (order: "asc" | "desc") => void;
   sortOrder: "asc" | "desc";
