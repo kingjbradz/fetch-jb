@@ -1,16 +1,15 @@
-import { useState, useEffect, ChangeEvent } from "react";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { ChangeEvent, useState, useEffect } from "react";
+import { Box, Button, CircularProgress, SelectChangeEvent } from "@mui/material";
 import { Dog } from "../Helpers/Interfaces.tsx";
 import {
-  fetchDogSearch,
-  fetchDogsByIds,
   fetchBreeds,
-  matchDog,
+  fetchDogsByIds,
+  fetchDogSearch,
+  matchDog
 } from "../Helpers/Api.tsx";
 import DashboardTable from "./DashboardTable.tsx";
 import DogFilters from "./DogFilters.tsx";
 import MatchDialog from "./MatchDialog.tsx";
-import { SelectChangeEvent } from "@mui/material";
 
 const DashboardComponent = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);

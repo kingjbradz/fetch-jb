@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import useLogout from "./Helpers/Hooks/useLogout";
 import ButtonAppBar from "./Components/TopBar";
 import Router from "./Components/Router";
-import { ThemeProvider, CssBaseline } from "@mui/material";
 import { theme } from "./Helpers/Theme";
 
 function App() {

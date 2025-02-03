@@ -1,11 +1,11 @@
-import { FC, ChangeEvent } from "react";
+import { ChangeEvent, FC } from "react";
 import {
-  TextField,
-  Select,
-  MenuItem,
-  Button,
   Box,
+  Button,
+  MenuItem,
+  Select,
   SelectChangeEvent,
+  TextField
 } from "@mui/material";
 import { DogFiltersProps } from "../Helpers/Interfaces";
 

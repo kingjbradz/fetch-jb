@@ -1,4 +1,4 @@
-import { Navigate, Routes, Route } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import Login from "../Pages/Login.tsx";
 import Dashboard from "../Pages/Dashboard.tsx";

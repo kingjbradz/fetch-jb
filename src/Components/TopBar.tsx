@@ -1,9 +1,5 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import { useQuery } from "@tanstack/react-query";
+import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import PetsIcon from "@mui/icons-material/Pets";
 import LogoutButton from "./LogoutButton";
 import { useNavigate } from "react-router";

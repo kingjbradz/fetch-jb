@@ -1,12 +1,12 @@
 import {
+  Box,
+  Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
-  CircularProgress,
-  Box,
-  Typography,
+  Typography
 } from "@mui/material";
 import { MatchDialogProps } from "../Helpers/Interfaces.tsx";
 
