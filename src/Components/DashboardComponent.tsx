@@ -9,7 +9,8 @@ import {
 } from "../Helpers/Api.tsx";
 import DashboardTable from "./DashboardTable.tsx";
 import DogFilters from "./DogFilters.tsx";
-import MatchDialog from "./MatchDialog.tsx"; // Import the new MatchDialog component
+import MatchDialog from "./MatchDialog.tsx";
+import { SelectChangeEvent } from "@mui/material";
 
 const DashboardComponent = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);
@@ -129,8 +130,8 @@ const DashboardComponent = () => {
 
   // 🔹 Handle filter changes dynamically
   const handleFilterChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent<string>
+  ) =>  {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -216,4 +217,3 @@ const DashboardComponent = () => {
 };
 
 export default DashboardComponent;
-

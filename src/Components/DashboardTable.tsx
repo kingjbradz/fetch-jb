@@ -1,9 +1,7 @@
 import { FC } from "react";
 import { Avatar, Box } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Dog, DashboardTableProps } from "../Helpers/Interfaces.tsx";
-
-
+import { DashboardTableProps } from "../Helpers/Interfaces.tsx";
 
 const columns: GridColDef[] = [
   {

@@ -1,7 +1,6 @@
-import { FC } from "react";
-import { TextField, Select, MenuItem, Button, Box } from "@mui/material";
+import { FC, ChangeEvent } from "react";
+import { TextField, Select, MenuItem, Button, Box, SelectChangeEvent } from "@mui/material";
 import { DogFiltersProps } from "../Helpers/Interfaces";
-
 
 const DogFilters: FC<DogFiltersProps> = ({
   filters,
@@ -31,7 +30,7 @@ const DogFilters: FC<DogFiltersProps> = ({
         name="ageMin"
         label="Min Age"
         value={filters.ageMin}
-        onChange={handleFilterChange}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFilterChange(event)}
         size="small"
       />
       <TextField
@@ -39,7 +38,7 @@ const DogFilters: FC<DogFiltersProps> = ({
         name="ageMax"
         label="Max Age"
         value={filters.ageMax}
-        onChange={handleFilterChange}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFilterChange(event)}
         size="small"
       />
 
@@ -47,7 +46,7 @@ const DogFilters: FC<DogFiltersProps> = ({
       <Select
         name="breeds"
         value={filters.breeds}
-        onChange={handleFilterChange}
+        onChange={(event: SelectChangeEvent<string>) => handleFilterChange(event)}
         displayEmpty
         size="small"
       >
@@ -65,7 +64,7 @@ const DogFilters: FC<DogFiltersProps> = ({
         name="zipCodes"
         label="Zip Code"
         value={filters.zipCodes}
-        onChange={handleFilterChange}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFilterChange(event)}
         size="small"
       />
 

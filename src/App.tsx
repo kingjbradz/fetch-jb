@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useLogout } from "./Helpers/Hooks";
+import { useQueryClient } from "@tanstack/react-query";
+import useLogout from "./Helpers/Hooks/useLogout";
 import ButtonAppBar from "./Components/TopBar";
 import Router from "./Components/Router";
 import { ThemeProvider, CssBaseline } from "@mui/material";
@@ -11,10 +11,10 @@ function App() {
   const logoutMutation = useLogout(); 
 
   // ✅ Get auth state from React Query
-  const { data: isAuthenticated } = useQuery({
-    queryKey: ["auth"],
-    initialData: false,
-  });
+  // const { data: isAuthenticated } = useQuery({
+  //   queryKey: ["auth"],
+  //   initialData: false,
+  // });
 
   useEffect(() => {
     const authData = localStorage.getItem("auth");
@@ -43,7 +43,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ButtonAppBar />
-      <Router isLoggedIn={isAuthenticated} />
+      <Router />
     </ThemeProvider>
   );
 }

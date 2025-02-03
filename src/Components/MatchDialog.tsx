@@ -1,5 +1,13 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress, Box, Typography } from "@mui/material";
-import { Dog } from "../Helpers/Interfaces.tsx";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  CircularProgress,
+  Box,
+  Typography,
+} from "@mui/material";
 import { MatchDialogProps } from "../Helpers/Interfaces.tsx";
 
 const MatchDialog = ({ matchedDog, open, onClose }: MatchDialogProps) => {
@@ -14,7 +22,11 @@ const MatchDialog = ({ matchedDog, open, onClose }: MatchDialogProps) => {
             <Typography>Breed: {matchedDog.breed}</Typography>
             <Typography>ZIP Code: {matchedDog.zip_code}</Typography>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <img src={matchedDog.img} alt={matchedDog.name} style={{ width: "150px", border: "0.5px solid black" }} />
+              <img
+                src={matchedDog.img}
+                alt={matchedDog.name}
+                style={{ width: "150px", border: "0.5px solid black" }}
+              />
             </Box>
           </Box>
         ) : (

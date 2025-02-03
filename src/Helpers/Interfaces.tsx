@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react"
+
 export interface Dog {
   id: string
   img: string
@@ -49,6 +51,17 @@ export interface LoginState {
   email: string;
 }
 
+export interface LoginFormProps {
+  state: {
+    name: string;
+    email: string;
+  };
+  handleSubmit: (event: React.FormEvent) => void;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isPending: boolean;
+  error: Error | null;
+}
+
 export interface DogFiltersProps {
   filters: {
     ageMin: string;
@@ -56,7 +69,9 @@ export interface DogFiltersProps {
     breeds: string;
     zipCodes: string;
   };
-  handleFilterChange: (event: React.ChangeEvent<{ name: string; value: unknown }>) => void;
+  handleFilterChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
   setSortOrder: (order: "asc" | "desc") => void;
   sortOrder: "asc" | "desc";
   setPageCursor: (cursor: string) => void;

@@ -1,20 +1,15 @@
 import Button from '@mui/material/Button';
-import { useLogout } from '../Helpers/Hooks';
+import useLogout from '../Helpers/Hooks/useLogout';
 import { useNavigate } from 'react-router';
 
 const LogoutButton = () => {
   const navigate = useNavigate();
-  const { mutate: logoutUser, isPending, error } = useLogout();
+  const { mutate: logoutUser, isPending } = useLogout();
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
-    logoutUser(null, {
-      onSuccess: () => {
-        // Redirect to login page
-        navigate("/login");
-      },
-      onError: (err) => alert(err), // Handle error properly
-    });
+    logoutUser(); // No arguments passed
+    navigate("/login"); // Redirect after logout
   };
 
   return (
