@@ -24,7 +24,6 @@ const DogFilters: FC<DogFiltersProps> = ({
         boxShadow: 1
       }}
     >
-      {/* Age Filters */}
       <TextField
         type="number"
         name="ageMin"
@@ -42,7 +41,6 @@ const DogFilters: FC<DogFiltersProps> = ({
         size="small"
       />
 
-      {/* Breed Selector */}
       <Select
         name="breeds"
         value={filters.breeds}
@@ -58,7 +56,6 @@ const DogFilters: FC<DogFiltersProps> = ({
         ))}
       </Select>
 
-      {/* Zip Code Filter */}
       <TextField
         type="text"
         name="zipCodes"
@@ -68,7 +65,6 @@ const DogFilters: FC<DogFiltersProps> = ({
         size="small"
       />
 
-      {/* Sorting Button */}
       <Button
         variant="contained"
         onClick={() => {

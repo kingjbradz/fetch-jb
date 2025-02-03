@@ -12,7 +12,7 @@ const TopBar = () => {
   const navigate = useNavigate();
   const { data: auth } = useQuery({
     queryKey: ["auth"],
-    initialData: false, // Assuming 'auth' is a boolean indicating login state
+    initialData: false, 
   });
   const { data: user } = useQuery({
     queryKey: ["user"],

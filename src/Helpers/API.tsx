@@ -58,8 +58,6 @@ export const fetchDogSearch = async (
     }
   });
 
-  console.log("fetchDogSearch URL:", url); // Debug: Verify URL structure
-
   const response = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -75,7 +73,6 @@ export const fetchDogSearch = async (
 };
 
 export const fetchDogsByIds = async (dogIds: string[]): Promise<Dog[]> => {
-  console.log("dogIds being sent as", JSON.stringify(dogIds));
   const response = await fetch(`${API_BASE_URL}/dogs`, {
     method: "POST",
     credentials: "include",
@@ -103,7 +100,6 @@ export const fetchBreeds = async (): Promise<string[]> => {
       throw new Error(`Failed to fetch breed list: ${response.status}`);
     }
     const data = await response.json();
-    console.log("Raw API response:", data); // ✅ Log raw API response
     return data;
   } catch (error) {
     console.error("fetchBreeds error:", error);
@@ -126,8 +122,6 @@ export const matchDog = async (dogIds: string[]): Promise<Dog | null> => {
       if (!matchResponse.ok) throw new Error("Failed to match dog");
 
       const { match: matchedDogId } = await matchResponse.json();
-      console.log("Matched Dog ID:", matchedDogId);
-
       if (!matchedDogId) return null;
 
       // Fetch details of the matched dog

@@ -10,12 +10,6 @@ function App() {
   const queryClient = useQueryClient();
   const logoutMutation = useLogout(); 
 
-  // ✅ Get auth state from React Query
-  // const { data: isAuthenticated } = useQuery({
-  //   queryKey: ["auth"],
-  //   initialData: false,
-  // });
-
   useEffect(() => {
     const authData = localStorage.getItem("auth");
     if (authData) {
@@ -24,14 +18,10 @@ function App() {
       const currentTime = new Date().getTime();
 
       if (currentTime - loginTimestamp > oneHour) {
-        console.log("Session expired, logging out.");
         logoutMutation.mutate();
       } else {
-        console.log("Restoring session:", { isAuthenticated, name, email });
-
         queryClient.setQueryData(["auth"], isAuthenticated);
         queryClient.setQueryData(["user"], { name, email });
-
         setTimeout(() => {
           logoutMutation.mutate();
         }, oneHour - (currentTime - loginTimestamp));

@@ -22,21 +22,17 @@ const DashboardComponent = () => {
   const [total, setTotal] = useState<number>(0);
   const [selectedDogIds, setSelectedDogIds] = useState<string[]>([]);
   const [matchedDog, setMatchedDog] = useState<Dog | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false); // State to control dialog visibility
-
-  // 🔹 Store all filters in a single state object
+  const [dialogOpen, setDialogOpen] = useState(false); 
   const [filters, setFilters] = useState({
     ageMin: "",
     ageMax: "",
     breeds: "",
     zipCodes: "",
   });
-
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 25,
   });
-
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
   const [breedsList, setBreedsList] = useState<string[]>([]);
 
@@ -44,7 +40,6 @@ const DashboardComponent = () => {
     const getBreeds = async () => {
       try {
         const breeds = await fetchBreeds();
-        console.log("Fetched breeds:", breeds);
         setBreedsList(breeds);
       } catch (error) {
         console.error("Error fetching breeds:", error);
@@ -72,7 +67,7 @@ const DashboardComponent = () => {
 
       if (resetPagination) {
         setPaginationModel({ page: 0, pageSize: paginationModel.pageSize });
-        setPageCursor(""); // Reset pagination to start
+        setPageCursor(""); 
       }
     } catch (error) {
       console.error("Error fetching dogs:", error);
@@ -83,23 +78,19 @@ const DashboardComponent = () => {
 
   const handleMatchDogs = async () => {
     if (selectedDogIds.length === 0) return;
-
-    console.log("Matching dogs with IDs:", selectedDogIds);
-
     const matchedDog = await matchDog(selectedDogIds);
 
     if (matchedDog) {
-      console.log("Matched Dog:", matchedDog);
       setMatchedDog(matchedDog); // Set matched dog in state
       setTimeout(() => {
         setDialogOpen(true); // Open dialog after state is set
       }, 50); // Small delay to ensure state update completes before opening the dialog
     } else {
-      console.log("No match found.");
+      alert("No match found");
     }
   };
 
-  // 🔹 Debounce filter updates
+  // Debounce filter
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedFilters(filters);
@@ -110,12 +101,12 @@ const DashboardComponent = () => {
     };
   }, [filters]);
 
-  // 🔹 Fetch dogs when filters, pagination, or sorting changes
+  // Fetch dogs when filters, pagination, or sorting changes
   useEffect(() => {
     getDogs(pageCursor, debouncedFilters);
   }, [pageCursor, debouncedFilters, sortOrder]);
 
-  // 🔹 Handle pagination
+  // Handle pagination
   const handlePage = (direction: "next" | "prev") => {
     let newPage = paginationModel.page;
     if (direction === "next" && nextCursor) {
@@ -128,7 +119,7 @@ const DashboardComponent = () => {
     setPaginationModel({ ...paginationModel, page: newPage });
   };
 
-  // 🔹 Handle filter changes dynamically
+  // Handle filter changes dynamically
   const handleFilterChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent<string>
   ) =>  {
@@ -210,7 +201,7 @@ const DashboardComponent = () => {
       <MatchDialog
         matchedDog={matchedDog}
         open={dialogOpen}
-        onClose={() => setDialogOpen(false)} // Close the dialog
+        onClose={() => setDialogOpen(false)} 
       />
     </>
   );

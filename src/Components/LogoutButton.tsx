@@ -8,8 +8,8 @@ const LogoutButton = () => {
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
-    logoutUser(); // No arguments passed
-    navigate("/login"); // Redirect after logout
+    logoutUser(); 
+    navigate("/login");
   };
 
   return (
