@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useLogout } from "./Helpers/Hooks";
-import ButtonAppBar from "./Components/AppBar";
+import ButtonAppBar from "./Components/TopBar";
 import Router from "./Components/Router";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import { theme } from "./Helpers/Theme";
 
 function App() {
   const queryClient = useQueryClient();
@@ -38,10 +40,11 @@ function App() {
   }, [queryClient, logoutMutation]);
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ButtonAppBar />
       <Router isLoggedIn={isAuthenticated} />
-    </>
+    </ThemeProvider>
   );
 }
 

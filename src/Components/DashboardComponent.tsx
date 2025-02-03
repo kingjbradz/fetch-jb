@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { Dog } from "../Helpers/Types.tsx";
+import { Box, Button, CircularProgress } from "@mui/material";
+import { Dog } from "../Helpers/Interfaces.tsx";
 import {
   fetchDogSearch,
   fetchDogsByIds,
@@ -7,6 +8,8 @@ import {
   matchDog,
 } from "../Helpers/Api.tsx";
 import DashboardTable from "./DashboardTable.tsx";
+import DogFilters from "./DogFilters.tsx";
+import MatchDialog from "./MatchDialog.tsx"; // Import the new MatchDialog component
 
 const DashboardComponent = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);
@@ -18,6 +21,7 @@ const DashboardComponent = () => {
   const [total, setTotal] = useState<number>(0);
   const [selectedDogIds, setSelectedDogIds] = useState<string[]>([]);
   const [matchedDog, setMatchedDog] = useState<Dog | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false); // State to control dialog visibility
 
   // 🔹 Store all filters in a single state object
   const [filters, setFilters] = useState({
@@ -78,19 +82,21 @@ const DashboardComponent = () => {
 
   const handleMatchDogs = async () => {
     if (selectedDogIds.length === 0) return;
-    
+
     console.log("Matching dogs with IDs:", selectedDogIds);
 
     const matchedDog = await matchDog(selectedDogIds);
 
     if (matchedDog) {
-        console.log("Matched Dog:", matchedDog);
-        setMatchedDog(matchedDog); // Store matched dog in state
+      console.log("Matched Dog:", matchedDog);
+      setMatchedDog(matchedDog); // Set matched dog in state
+      setTimeout(() => {
+        setDialogOpen(true); // Open dialog after state is set
+      }, 50); // Small delay to ensure state update completes before opening the dialog
     } else {
-        console.log("No match found.");
+      console.log("No match found.");
     }
-};
-
+  };
 
   // 🔹 Debounce filter updates
   useEffect(() => {
@@ -133,84 +139,81 @@ const DashboardComponent = () => {
     setPageCursor(""); // Reset pagination when filtering
   };
 
+  const currentPageSelected = dogs
+    .map((dog) => dog.id)
+    .filter((id) => selectedDogIds.includes(id));
+
+  const handleSelectionChange = (currentPageSelection: string[]) => {
+    // Get the IDs of the dogs that are on the current page.
+    const currentPageIds = dogs.map((dog) => dog.id);
+
+    // Get IDs that were previously selected but are no longer in the new selection
+    const deselectedIds = currentPageIds.filter(
+      (id) => selectedDogIds.includes(id) && !currentPageSelection.includes(id)
+    );
+
+    // Filter out deselected IDs from the global selection
+    const updatedGlobalSelection = selectedDogIds.filter(
+      (id) => !deselectedIds.includes(id)
+    );
+
+    // Merge with the new selections
+    setSelectedDogIds([...updatedGlobalSelection, ...currentPageSelection]);
+  };
+
   return (
     <>
-      <div>
-        <input
-          type="text"
-          name="ageMin"
-          value={filters.ageMin}
-          onChange={handleFilterChange}
-          placeholder="Min Age"
-        />
-        <input
-          type="text"
-          name="ageMax"
-          value={filters.ageMax}
-          onChange={handleFilterChange}
-          placeholder="Max Age"
-        />
-
-        <select
-          name="breeds"
-          value={filters.breeds}
-          onChange={handleFilterChange}
-        >
-          <option value="">Select a breed</option>
-          {breedsList.map((breed) => (
-            <option key={breed} value={breed}>
-              {breed}
-            </option>
-          ))}
-        </select>
-
-        <input
-          type="text"
-          name="zipCodes"
-          value={filters.zipCodes}
-          onChange={handleFilterChange}
-          placeholder="Zip Codes"
-        />
-
-        <button
-          onClick={() => {
-            setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-            setPageCursor(""); // Reset pagination to start from first page
-          }}
-        >
-          Sort by Breed ({sortOrder === "asc" ? "A → Z" : "Z → A"})
-        </button>
-      </div>
+      <DogFilters
+        filters={filters}
+        handleFilterChange={handleFilterChange}
+        setSortOrder={setSortOrder}
+        sortOrder={sortOrder}
+        setPageCursor={setPageCursor}
+        breedsList={breedsList}
+      />
 
       {loading ? (
-        <p>Loading dogs...</p>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: 300,
+          }}
+        >
+          <CircularProgress />
+        </Box>
       ) : (
-        <DashboardTable
-          dogs={dogs}
-          handlePage={handlePage}
-          prevCursor={prevCursor}
-          nextCursor={nextCursor}
-          total={total}
-          paginationModel={paginationModel}
-          selectedDogIds={selectedDogIds}
-          onSelectionChange={setSelectedDogIds}
-        />
+        <Box>
+          <DashboardTable
+            dogs={dogs}
+            handlePage={handlePage}
+            prevCursor={prevCursor}
+            nextCursor={nextCursor}
+            total={total}
+            paginationModel={paginationModel}
+            selectedDogIds={currentPageSelected}
+            onSelectionChange={handleSelectionChange}
+          />
+          <Button
+            size="small"
+            variant="contained"
+            onClick={handleMatchDogs}
+            disabled={selectedDogIds.length === 0}
+          >
+            Find your match!
+          </Button>
+        </Box>
       )}
-      <button onClick={handleMatchDogs} disabled={selectedDogIds.length === 0}>
-        Match Selected Dogs
-      </button>
-      {matchedDog && (
-        <div>
-          <h3>Matched Dog</h3>
-          <p>Name: {matchedDog.name}</p>
-          <p>Age: {matchedDog.age}</p>
-          <p>Breed: {matchedDog.breed}</p>
-          <p>ZIP Code: {matchedDog.zip_code}</p>
-          <img src={matchedDog.img} alt={matchedDog.name} width="100" />
-        </div>
-      )}
+
+      <MatchDialog
+        matchedDog={matchedDog}
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)} // Close the dialog
+      />
     </>
   );
 };
 
 export default DashboardComponent;
+

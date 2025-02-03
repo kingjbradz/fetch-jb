@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Dog, DogsSearchResponse } from "./Types.tsx";
+import { Dog, DogsSearchResponse } from "./Interfaces.tsx";
 
 const API_BASE_URL = `https://frontend-take-home-service.fetch.com`;
 

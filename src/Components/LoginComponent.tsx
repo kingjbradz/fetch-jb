@@ -2,11 +2,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router";
 import { useLogin } from "../Helpers/Hooks.tsx";
 import LoginForm from "./LoginForm.tsx";
-
-interface LoginState {
-  name: string;
-  email: string;
-}
+import { LoginState } from "../Helpers/Interfaces.tsx";
 
 const LoginComponent = () => {
   const navigate = useNavigate();

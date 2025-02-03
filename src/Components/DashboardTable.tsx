@@ -1,37 +1,30 @@
 import { FC } from "react";
-import Avatar from "@mui/material/Avatar";
+import { Avatar, Box } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Dog } from "../Helpers/Types.tsx";
+import { Dog, DashboardTableProps } from "../Helpers/Interfaces.tsx";
 
-interface DashboardTableProps {
-  dogs: Dog[];
-  handlePage: (direction: "next" | "prev") => void;
-  prevCursor: string;
-  nextCursor: string;
-  total: number;
-  paginationModel: { page: number; pageSize: number };
-  selectedDogIds: string[];
-  onSelectionChange: (newSelection: string[]) => void;
-}
+
 
 const columns: GridColDef[] = [
   {
     field: "img",
     headerName: "",
-    width: 100,
+    width: 150,
     sortable: false,
     renderCell: (params) => (
-      <Avatar
-        src={params.value}
-        alt="Dog Image"
-        sx={{ width: 50, height: 50 }}
-      />
-    ),
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: 50, width: "100%" }}>
+        <Avatar
+          src={params.value}
+          alt="Dog Image"
+          sx={{ width: 40, height: 40 }}
+          />
+      </Box>
+        ),
   },
-  { field: "name", headerName: "Name", width: 180, editable: true, sortable: false, hideable: false, filterable: false },
-  { field: "age", headerName: "Age", type: "number", width: 100, editable: true, hideable: false },
-  { field: "breed", headerName: "Breed", width: 180, editable: true, hideable: false },
-  { field: "zip_code", headerName: "ZIP Code", width: 150, editable: true, hideable: false },
+  { field: "name", headerName: "Name", editable: true, hideable: false, filterable: false, flex: 1 },
+  { field: "age", headerName: "Age", editable: true, hideable: false,  flex: 1  },
+  { field: "breed", headerName: "Breed", editable: true, hideable: false,  flex: 1  },
+  { field: "zip_code", headerName: "ZIP Code", editable: true, hideable: false,  flex: 1  },
 ];
 
 const DashboardTable: FC<DashboardTableProps> = ({
@@ -54,29 +47,44 @@ const DashboardTable: FC<DashboardTableProps> = ({
   }));
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <Box sx={{ 
+      width: "100%", bgcolor: "background.paper", borderRadius: "8px",
+      height: 'calc(100vh - 220px)', // Example: Subtract 150px for the header and other components
+      display: 'flex',
+      flexDirection: 'column',
+      marginBottom: 1,
+      boxShadow: 1,
+      '& .MuiDataGrid-root': {
+        flexGrow: 1,
+        overflow: 'hidden',
+      },
+
+     }}>
       <DataGrid
-        rows={rows}
-        columns={columns}
-        checkboxSelection
-        rowSelectionModel={selectedDogIds}
-        onRowSelectionModelChange={(newSelection) =>
-          onSelectionChange(newSelection as string[])
-        }
-        paginationMode="server"
-        paginationModel={paginationModel}
-        onPaginationModelChange={(newModel) => {
-          if (newModel.page > paginationModel.page && nextCursor) {
-            handlePage("next");
-          } else if (newModel.page < paginationModel.page && prevCursor) {
-            handlePage("prev");
+          rows={rows}
+          columns={columns}
+          checkboxSelection
+          rowSelectionModel={selectedDogIds}
+          onRowSelectionModelChange={(newSelection) =>
+            onSelectionChange(newSelection as string[])
           }
-        }}
-        rowCount={total}
-        pageSizeOptions={[25]}
-        isCellEditable={() => false}
+          paginationMode="server"
+          paginationModel={paginationModel}
+          onPaginationModelChange={(newModel) => {
+            if (newModel.page > paginationModel.page && nextCursor) {
+              handlePage("next");
+            } else if (newModel.page < paginationModel.page && prevCursor) {
+              handlePage("prev");
+            }
+          }}
+          rowCount={total}
+          pageSizeOptions={[25]}
+          isCellEditable={() => false}
+          disableColumnMenu
+          keepNonExistentRowsSelected
+          hideFooterSelectedRowCount
       />
-    </div>
+    </Box>
   );
 };
 
